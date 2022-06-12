@@ -2,6 +2,11 @@ const knex = require('../database/connection');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+//Validations
+const {
+    yupCreateUser
+} = require('../validations/yupUser');
+
 async function UserSignUp(req, res) {
     let {
         nickname, senha, nivel
@@ -9,13 +14,14 @@ async function UserSignUp(req, res) {
 
     const reqBodyLength = Object.keys(req.body).length;
 
-    if (reqBodyLength === 0 || !nickname || !senha || !nivel) return res.status(400).json({
+    if (reqBodyLength === 0) return res.status(400).json({
         message: 'Todos os campos são obrigatórios.'
     });
 
     try {
-        nickname = nickname.toLowerCase();
+        await yupCreateUser.validate(req.body);
 
+        nickname = nickname.toLowerCase();
         senha = await bcrypt.hash(String(senha), 10);
 
         const newUserData = {

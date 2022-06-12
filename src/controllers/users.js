@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken');
 
 //Validations
 const {
-    yupCreateUser
+    yupCreateUser,
+    yupLoginUser
 } = require('../validations/yupUser');
 
 async function UserSignUp(req, res) {
@@ -56,7 +57,7 @@ async function UserLogin(req, res) {
     });
 
     try {
-
+        await yupLoginUser.validate(req.body);
     } catch ({ message }) {
         return res.status(500).json({ message });
     };
@@ -64,5 +65,6 @@ async function UserLogin(req, res) {
 
 
 module.exports = {
-    UserSignUp
+    UserSignUp,
+    UserLogin
 };

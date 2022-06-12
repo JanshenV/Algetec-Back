@@ -10,7 +10,7 @@ const {
 
 async function UserSignUp(req, res) {
     let {
-        nickname, senha, nivel
+        nickname, email, senha, nivel
     } = req.body;
 
     const reqBodyLength = Object.keys(req.body).length;
@@ -22,11 +22,21 @@ async function UserSignUp(req, res) {
     try {
         await yupCreateUser.validate(req.body);
 
+        email = email.toLowerCase();
+        const existingEmail = await knex('usuarios')
+            .where(email)
+            .fist();
+
+        if (existingEmail) return res.status(409).json({
+            message: "Email já utilizado por outro usuário."
+        });
+
         nickname = nickname.toLowerCase();
         senha = await bcrypt.hash(String(senha), 10);
 
         const newUserData = {
             nickname,
+            email,
             senha,
             nivel
         };
@@ -46,7 +56,7 @@ async function UserSignUp(req, res) {
 
 async function UserLogin(req, res) {
     let {
-        nickname,
+        email,
         senha
     } = req.body;
 

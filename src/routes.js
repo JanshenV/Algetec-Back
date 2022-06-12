@@ -7,10 +7,12 @@ const {
     UserLogin
 } = require('./controllers/users');
 
-
+//Middleware
+const TokenValidation = require('./middleware/TokenValidation');
 
 routes.post('/usuarios', UserSignUp);
 routes.post('/usuarios/login', UserLogin);
+routes.use(TokenValidation);
 routes.get('/welcome', (req, res) => {
     return res.status(200).json('Bem vindo(a)!');
 });

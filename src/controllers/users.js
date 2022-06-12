@@ -68,6 +68,30 @@ async function UserLogin(req, res) {
 
     try {
         await yupLoginUser.validate(req.body);
+
+        email = email.toLowerCase();
+        const user = await knex('usuarios')
+            .where({ email })
+            .first();
+
+        if (!user) return res.status(404).json({
+            message: `Usuário com email ${email} não encontrado.`
+        });
+        const passwordCompare = await bcrypt.compare(String(senha), user.senha);
+
+        if (!passwordCompare) return res.status(401).json({
+            message: "Email e senha não conferem."
+        });
+
+        const token = jwt.sign(
+            { id: user.id },
+            process.env.SECRET_JWT,
+            { expiresIn: '8h' }
+        );
+
+        return res.status(200).json({
+            token
+        });
     } catch ({ message }) {
         return res.status(500).json({ message });
     };

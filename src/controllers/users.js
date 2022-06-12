@@ -24,8 +24,8 @@ async function UserSignUp(req, res) {
 
         email = email.toLowerCase();
         const existingEmail = await knex('usuarios')
-            .where(email)
-            .fist();
+            .where({ email })
+            .first();
 
         if (existingEmail) return res.status(409).json({
             message: "Email já utilizado por outro usuário."

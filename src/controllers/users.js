@@ -43,7 +43,26 @@ async function UserSignUp(req, res) {
     };
 };
 
+async function UserLogin(req, res) {
+    let {
+        nickname,
+        senha
+    } = req.body;
+
+    const reqBodyLength = Object.keys(req.body).length;
+
+    if (reqBodyLength === 0) return res.status(400).json({
+        message: 'Todos os campos são obrigatórios.'
+    });
+
+    try {
+
+    } catch ({ message }) {
+        return res.status(500).json({ message });
+    };
+};
+
 
 module.exports = {
     UserSignUp
-}
+};

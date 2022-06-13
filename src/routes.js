@@ -8,13 +8,24 @@ const {
     UserProfile
 } = require('./controllers/users');
 
+const {
+    CreateIssue
+} = require('./controllers/issues');
+
 //Middleware
 const TokenValidation = require('./middleware/TokenValidation');
 
+
+//User Routes
 routes.post('/usuarios', UserSignUp);
 routes.post('/usuarios/login', UserLogin);
 routes.use(TokenValidation);
 routes.get('/usuarios', UserProfile);
+
+//Issue Routes
+
+routes.post('/issues', CreateIssue);
+
 routes.get('/welcome', (req, res) => {
     return res.status(200).json('Bem vindo(a)!');
 });

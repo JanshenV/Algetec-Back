@@ -21,13 +21,18 @@ async function CreateIssue(req, res) {
     try {
         await yupCreateIssue.validate(req.body);
 
+        const dateNow = new Date().toLocaleString('pt-BR', {
+            timeZone: 'America/Bahia'
+        });
+
         let newIssue = {
             problema: problema.toLowerCase(),
             versao: versao.toLowerCase(),
             usuario_id: user_id,
             descricao: descricao.toLowerCase(),
             prioridade: prioridade.toLowerCase(),
-            status: status ? status.toLowerCase() : "novo"
+            status: status ? status.toLowerCase() : "novo",
+            data: dateNow
         };
 
         await knex('issues')
@@ -116,10 +121,17 @@ async function ModifyIssueStatus(req, res) {
             message: `Não é possível modificar o status para "${status}"`
         });
 
+        const dateNow = new Date().toLocaleString('pt-BR', {
+            timeZone: 'America/Bahia'
+        });
+
         issue = await knex('issues')
-            .where({ id: issue_id })
+            .where({
+                id: issue_id,
+            })
             .update({
-                status
+                status,
+                data: dateNow
             })
             .returning('*');
 

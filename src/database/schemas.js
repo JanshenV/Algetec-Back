@@ -17,7 +17,8 @@ create table issues(
     usuario_id int not null  references usuarios(id),
     descricao text not null,
     prioridade varchar(55) not null,
-    status text default 'Novo'
+    status text default 'Novo',
+    data timestamptz default now()
 )`;
 
 module.exports = { schemasUser, schemasIssues };

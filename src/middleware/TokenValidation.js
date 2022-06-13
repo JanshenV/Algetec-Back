@@ -20,7 +20,7 @@ async function TokenValidation(req, res, next) {
             message: 'Usuário com esse token não foi encontrado.'
         });
 
-        const { password: _, ...userData } = user;
+        const { senha: _, ...userData } = user;
         req.user = userData;
         return next();
     } catch ({ message }) {

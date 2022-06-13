@@ -10,7 +10,8 @@ const {
 
 const {
     CreateIssue,
-    DeleteIssue
+    DeleteIssue,
+    ModifyIssueStatus
 } = require('./controllers/issues');
 
 //Middleware
@@ -27,10 +28,6 @@ routes.get('/usuarios', UserProfile);
 
 routes.post('/issues', CreateIssue);
 routes.delete('/issues/:id', DeleteIssue);
-
-routes.get('/welcome', (req, res) => {
-    return res.status(200).json('Bem vindo(a)!');
-});
-
+routes.patch('/issues/:id', ModifyIssueStatus);
 
 module.exports = routes;

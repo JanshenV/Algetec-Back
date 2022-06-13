@@ -8,7 +8,11 @@ const yupCreateIssue = yup.object().shape({
     status: yup.string()
 });
 
+const yupModifyIssueStatus = yup.object().shape({
+    status: yup.string().required()
+});
 
 module.exports = {
-    yupCreateIssue
+    yupCreateIssue,
+    yupModifyIssueStatus
 };

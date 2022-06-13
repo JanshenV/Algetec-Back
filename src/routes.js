@@ -9,7 +9,8 @@ const {
 } = require('./controllers/users');
 
 const {
-    CreateIssue
+    CreateIssue,
+    DeleteIssue
 } = require('./controllers/issues');
 
 //Middleware
@@ -25,6 +26,7 @@ routes.get('/usuarios', UserProfile);
 //Issue Routes
 
 routes.post('/issues', CreateIssue);
+routes.delete('/issues/:id', DeleteIssue);
 
 routes.get('/welcome', (req, res) => {
     return res.status(200).json('Bem vindo(a)!');

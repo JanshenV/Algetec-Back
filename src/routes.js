@@ -25,7 +25,6 @@ routes.use(TokenValidation);
 routes.get('/usuarios', UserProfile);
 
 //Issue Routes
-
 routes.post('/issues', CreateIssue);
 routes.delete('/issues/:id', DeleteIssue);
 routes.patch('/issues/:id', ModifyIssueStatus);

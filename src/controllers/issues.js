@@ -21,12 +21,12 @@ async function CreateIssue(req, res) {
         await yupCreateIssue.validate(req.body);
 
         let newIssue = {
-            problema,
-            versao,
+            problema: problema.toLowerCase(),
+            versao: versao.toLowerCase(),
             usuario_id: user_id,
-            descricao,
-            prioridade,
-            status: status ? status : "Novo"
+            descricao: descricao.toLowerCase(),
+            prioridade: prioridade.toLowerCase(),
+            status: status ? status.toLowerCase() : "novo"
         };
 
         await knex('issues')
@@ -41,6 +41,10 @@ async function CreateIssue(req, res) {
         });
     };
 };
+
+// async function DeleteIssue(req, res) {
+//     let { }
+// }
 
 
 module.exports = {

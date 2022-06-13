@@ -1,4 +1,7 @@
-const schemas = require('../database/schemas');
+const {
+    schemasUser,
+    schemasIssues
+} = require('../database/schemas');
 const knex = require('../database/connection');
 
 async function Migration() {
@@ -9,7 +12,8 @@ async function Migration() {
         if (existingUserTable.length) return;
     } catch (error) {
         //Caso não exista tabela de usuarios, função cairá no catch onde criará a tabela.
-        const creatingUserTable = await knex.raw(schemas);
+        await knex.raw(schemasUser);
+        await knex.raw(schemasIssues);
         return;
     };
 };

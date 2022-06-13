@@ -1,4 +1,4 @@
-const schemas = `
+const schemasUser = `
 
 create table usuarios(
     id serial primary key,
@@ -6,7 +6,18 @@ create table usuarios(
     email varchar(225) not null,
     senha text not null,
     nivel varchar(55) not null
-)
-`;
+) `;
 
-module.exports = schemas;
+
+const schemasIssues = `
+create table issues(
+    id serial primary key,
+    problema text not null,
+    versao text not null,
+    usuario_id int not null  references usuarios(id),
+    descricao text not null,
+    prioridade varchar(55) not null,
+    status text default 'Novo'
+)`;
+
+module.exports = { schemasUser, schemasIssues };

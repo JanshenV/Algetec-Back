@@ -31,14 +31,13 @@ async function UserSignUp(req, res) {
             message: "Email já utilizado por outro usuário."
         });
 
-        nickname = nickname.toLowerCase();
         senha = await bcrypt.hash(String(senha), 10);
 
         const newUserData = {
-            nickname,
+            nickname: nickname.toLowerCase(),
             email,
             senha,
-            nivel
+            nivel: nivel.toLowerCase()
         };
 
         await knex('usuarios')

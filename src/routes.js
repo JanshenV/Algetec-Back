@@ -19,7 +19,7 @@ const TokenValidation = require('./middleware/TokenValidation');
 
 
 //User Routes
-routes.post('/usuarios', UserSignUp);
+routes.post('/usuarios/signup', UserSignUp);
 routes.post('/usuarios/login', UserLogin);
 routes.use(TokenValidation);
 routes.get('/usuarios', UserProfile);

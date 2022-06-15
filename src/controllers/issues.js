@@ -13,13 +13,22 @@ async function CreateIssue(req, res) {
         versao,
         descricao,
         prioridade,
-        status
+        status,
+        atribuido
     } = req.body;
 
-    let { id: user_id } = req.user;
+    let { id: autor } = req.user;
 
     try {
         await yupCreateIssue.validate(req.body);
+
+        const existingUser = await knex('usuarios')
+            .where({ id: atribuido })
+            .first();
+
+        if (!existingUser) return res.status(404).json({
+            message: 'Issue não pode ser atribuida a um usuário inexistente.'
+        });
 
         const dateNow = new Date().toLocaleString('pt-BR', {
             timeZone: 'America/Bahia'
@@ -28,16 +37,23 @@ async function CreateIssue(req, res) {
         let newIssue = {
             problema: problema.toLowerCase(),
             versao: versao.toLowerCase(),
-            usuario_id: user_id,
             descricao: descricao.toLowerCase(),
             prioridade: prioridade.toLowerCase(),
             status: status ? status.toLowerCase() : "novo",
+            autor,
             data: dateNow
         };
-
         newIssue = await knex('issues')
             .insert(newIssue)
             .returning('*');
+
+        let newRelations = {
+            issue_id: newIssue[0].id,
+            atribuido: Number(atribuido)
+        };
+
+        await knex('relacoes')
+            .insert(newRelations);
 
         return res.status(201).json({
             issue: newIssue

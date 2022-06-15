@@ -5,7 +5,8 @@ const yupCreateIssue = yup.object().shape({
     versao: yup.string().required(),
     descricao: yup.string().required(),
     prioridade: yup.string().required(),
-    status: yup.string()
+    status: yup.string(),
+    atribuido: yup.number().required()
 });
 
 const yupModifyIssueStatus = yup.object().shape({

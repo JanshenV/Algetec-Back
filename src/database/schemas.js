@@ -18,18 +18,10 @@ create table issues(
     prioridade varchar(55) not null,
     status text default 'Novo',
     autor int not null references usuarios(id),
+    atribuido int not null references usuarios(id),
     data timestamptz default now()
 )`;
-
-const schemasForeignKeys = `
-create table relacoes(
-    id serial primary key,
-    issue_id int not null references issues(id),
-    atribuido int not null references usuarios(id)
-)`
-
 module.exports = {
     schemasUser,
     schemasIssues,
-    schemasForeignKeys
 };

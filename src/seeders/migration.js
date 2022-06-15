@@ -1,7 +1,6 @@
 const {
     schemasUser,
     schemasIssues,
-    schemasForeignKeys
 } = require('../database/schemas');
 const knex = require('../database/connection');
 
@@ -15,7 +14,6 @@ async function Migration() {
         //Caso não exista tabela de usuarios, função cairá no catch onde criará a tabela.
         await knex.raw(schemasUser);
         await knex.raw(schemasIssues);
-        await knex.raw(schemasForeignKeys);
         return;
     };
 };

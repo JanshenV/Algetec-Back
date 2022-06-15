@@ -6,7 +6,6 @@ const {
     yupModifyIssueStatus
 } = require('../validations/yupIssues');
 
-
 async function CreateIssue(req, res) {
     let {
         problema,
@@ -41,19 +40,12 @@ async function CreateIssue(req, res) {
             prioridade: prioridade.toLowerCase(),
             status: status ? status.toLowerCase() : "novo",
             autor,
+            atribuido: Number(atribuido),
             data: dateNow
         };
         newIssue = await knex('issues')
             .insert(newIssue)
             .returning('*');
-
-        let newRelations = {
-            issue_id: newIssue[0].id,
-            atribuido: Number(atribuido)
-        };
-
-        await knex('relacoes')
-            .insert(newRelations);
 
         return res.status(201).json({
             issue: newIssue
@@ -91,6 +83,17 @@ async function DeleteIssue(req, res) {
             .where({ id: issue_id });
 
         return res.status(200).json();
+    } catch ({ message }) {
+        return res.status(500).json({
+            message
+        });
+    };
+};
+
+async function GetAllIsues(req, res) {
+    try {
+        const allIssues = await knex('issues')
+            .select('issues.*',)
     } catch ({ message }) {
         return res.status(500).json({
             message

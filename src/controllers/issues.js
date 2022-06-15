@@ -93,10 +93,19 @@ async function DeleteIssue(req, res) {
 async function GetAllIsues(req, res) {
     try {
         const allIssues = await knex('issues')
-            .select('issues.*',
-                'usuarios.nickname',
-                'usuarios.id',
-                'usuarios.nivel')
+            .select(
+                'issues.id as issue_id',
+                'issues.problema as problema',
+                'issues.versao as versao',
+                'issues.descricao as descricao',
+                'issues.prioridade as prioridade',
+                'issues.status as status',
+                'issues.problema as problema',
+                'issues.data as data',
+                'issues.atribuido as atribuido',
+                'usuarios.nickname as autor',
+                'usuarios.id as autor_id',
+                'usuarios.nivel as autor_nivel')
             .leftJoin('usuarios', 'usuarios.id', 'issues.autor');
 
         for (issue of allIssues) {

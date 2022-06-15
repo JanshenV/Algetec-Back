@@ -35,11 +35,12 @@ async function CreateIssue(req, res) {
             data: dateNow
         };
 
-        await knex('issues')
-            .insert(newIssue);
+        newIssue = await knex('issues')
+            .insert(newIssue)
+            .returning('*');
 
         return res.status(201).json({
-            message: 'Issue criada com sucesso.'
+            issue: newIssue
         });
     } catch ({ message }) {
         return res.status(500).json({

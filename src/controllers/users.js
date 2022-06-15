@@ -53,6 +53,22 @@ async function UserSignUp(req, res) {
     };
 };
 
+async function GetAllUsers(req, res) {
+    try {
+        const allUsers = await knex('usuarios')
+            .select('id', 'nickname', 'email', 'nivel');
+
+        return res.status(200).json({
+            allUsers
+        });
+
+    } catch ({ message }) {
+        return res.status(500).json({
+            message
+        });
+    };
+};
+
 async function UserLogin(req, res) {
     let {
         email,
@@ -107,5 +123,6 @@ async function UserProfile(req, res) {
 module.exports = {
     UserSignUp,
     UserLogin,
-    UserProfile
+    UserProfile,
+    GetAllUsers
 };

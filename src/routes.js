@@ -5,7 +5,8 @@ const routes = express();
 const {
     UserSignUp,
     UserLogin,
-    UserProfile
+    UserProfile,
+    GetAllUsers
 } = require('./controllers/users');
 
 const {
@@ -23,6 +24,7 @@ routes.post('/usuarios/signup', UserSignUp);
 routes.post('/usuarios/login', UserLogin);
 routes.use(TokenValidation);
 routes.get('/usuarios', UserProfile);
+routes.get('/usuarios/all', GetAllUsers);
 
 //Issue Routes
 routes.post('/issues', CreateIssue);

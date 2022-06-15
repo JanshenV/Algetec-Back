@@ -12,7 +12,8 @@ const {
 const {
     CreateIssue,
     DeleteIssue,
-    ModifyIssueStatus
+    ModifyIssueStatus,
+    GetAllIsues
 } = require('./controllers/issues');
 
 //Middleware
@@ -27,6 +28,7 @@ routes.get('/usuarios', UserProfile);
 routes.get('/usuarios/all', GetAllUsers);
 
 //Issue Routes
+routes.get('/issues/all', GetAllIsues);
 routes.post('/issues', CreateIssue);
 routes.delete('/issues/:id', DeleteIssue);
 routes.patch('/issues/:id', ModifyIssueStatus);

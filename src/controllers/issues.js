@@ -93,7 +93,15 @@ async function DeleteIssue(req, res) {
 async function GetAllIsues(req, res) {
     try {
         const allIssues = await knex('issues')
-            .select('issues.*',)
+            .select('issues.*',
+                'usuarios.nickname',
+                'usuarios.id',
+                'usuarios.nivel')
+            .leftJoin('usuarios', 'usuarios.id', 'issues.autor');
+
+        return res.status(200).json({
+            allIssues
+        });
     } catch ({ message }) {
         return res.status(500).json({
             message
@@ -166,5 +174,6 @@ async function ModifyIssueStatus(req, res) {
 module.exports = {
     CreateIssue,
     DeleteIssue,
-    ModifyIssueStatus
+    ModifyIssueStatus,
+    GetAllIsues
 };

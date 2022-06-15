@@ -99,6 +99,15 @@ async function GetAllIsues(req, res) {
                 'usuarios.nivel')
             .leftJoin('usuarios', 'usuarios.id', 'issues.autor');
 
+        for (issue of allIssues) {
+            const atributedTo = await knex('usuarios')
+                .select('nickname')
+                .where({ id: issue.atribuido })
+                .first();
+
+            issue.atribuido = atributedTo;
+        };
+
         return res.status(200).json({
             allIssues
         });

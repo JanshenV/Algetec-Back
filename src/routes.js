@@ -13,7 +13,8 @@ const {
     CreateIssue,
     DeleteIssue,
     ModifyIssueStatus,
-    GetAllIsues
+    GetAllIsues,
+    DeleteMultiple
 } = require('./controllers/issues');
 
 //Middleware
@@ -32,5 +33,6 @@ routes.get('/issues/all', GetAllIsues);
 routes.post('/issues', CreateIssue);
 routes.delete('/issues/:id', DeleteIssue);
 routes.patch('/issues/:id', ModifyIssueStatus);
+routes.delete('/multiple/issues', DeleteMultiple);
 
 module.exports = routes;

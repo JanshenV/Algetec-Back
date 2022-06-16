@@ -60,6 +60,7 @@ async function CreateIssue(req, res) {
 async function DeleteIssue(req, res) {
     let { id: issue_id } = req.params;
     const user = req.user;
+    issue_id = Number(issue_id);
 
     if (!issue_id || !(Number(issue_id) > 0)) return res.status(400).json({
         message: 'O id do issue deve existir nos paramêtros da URL e deve ser um número válido.'
@@ -158,9 +159,11 @@ async function ModifyIssueStatus(req, res) {
         ];
 
         if (status === 'aprovado' || status === 'reprovado') {
-            if (user.id !== issue.usuario_id) return res.status(401).json({
-                message: `Somente o criador deste item pode modificar para o status ${status}`
-            });
+            if (user.id !== issue.usuario_id) {
+                if (user.nivel !== 'scrum master' && user.nivel !== 'qa tester') return res.status(401).json({
+                    message: `Somente o criador deste item, scrum masters ou qa testes podem modificar para o status ${status}`
+                });
+            };
         };
 
         if (!availableStatus.includes(status)) return res.status(404).json({
@@ -189,9 +192,47 @@ async function ModifyIssueStatus(req, res) {
     };
 };
 
+async function DeleteMultiple(req, res) {
+    let {
+        arrayToDelete
+    } = req.body;
+    let user = req.user;
+
+    if (!arrayToDelete || !arrayToDelete.length) return res.status(401).json({
+        message: 'Lista de array com ids das issues necessária.'
+    });
+
+    try {
+        if (user.nivel !== 'scrum master') return res.status(401).json({
+            message: 'Você não tem autorização suficiente.'
+        });
+
+        for (id of arrayToDelete) {
+            const existingIssue = await knex('issues')
+                .where({ id })
+                .first();
+
+            if (!existingIssue) return res.status(404).json({
+                message: 'Issue não encontrado.'
+            });
+
+            await knex('issues')
+                .del()
+                .where({ id });
+        };
+
+        return res.status(200).json();
+    } catch ({ message }) {
+        return res.status(500).json({
+            message
+        });
+    };
+};
+
 module.exports = {
     CreateIssue,
     DeleteIssue,
     ModifyIssueStatus,
-    GetAllIsues
+    GetAllIsues,
+    DeleteMultiple
 };

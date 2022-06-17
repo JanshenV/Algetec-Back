@@ -20,6 +20,11 @@ const {
 //Middleware
 const TokenValidation = require('./middleware/TokenValidation');
 
+routes.get('/', (req, res) => {
+    return res.status(200).json({
+        message: 'Bem vindo algetec.'
+    });
+});
 
 //User Routes
 routes.post('/usuarios/signup', UserSignUp);

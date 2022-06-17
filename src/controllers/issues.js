@@ -29,8 +29,6 @@ async function CreateIssue(req, res) {
             message: 'Issue não pode ser atribuida a um usuário inexistente.'
         });
 
-        const dateNow = new Date();
-
         let newIssue = {
             problema: problema.toLowerCase(),
             versao: versao.toLowerCase(),
@@ -39,7 +37,6 @@ async function CreateIssue(req, res) {
             status: status ? status.toLowerCase() : "novo",
             autor,
             atribuido: Number(atribuido),
-            data: dateNow
         };
         newIssue = await knex('issues')
             .insert(newIssue)

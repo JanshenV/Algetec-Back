@@ -165,9 +165,7 @@ async function ModifyIssueStatus(req, res) {
             message: `Não é possível modificar o status para "${status}"`
         });
 
-        const dateNow = new Date().toLocaleString('pt-BR', {
-            timeZone: 'America/Bahia'
-        });
+        const dateNow = new Date();
 
         issue = await knex('issues')
             .where({

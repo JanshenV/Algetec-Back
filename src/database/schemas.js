@@ -19,8 +19,7 @@ create table issues(
     autor int not null references usuarios(id),
     atribuido int not null references usuarios(id),
     data timestamptz default now()
-
-`;
+)`;
 
 module.exports = {
     schemasUsuarios,

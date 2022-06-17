@@ -29,9 +29,7 @@ async function CreateIssue(req, res) {
             message: 'Issue não pode ser atribuida a um usuário inexistente.'
         });
 
-        const dateNow = new Date().toLocaleString('pt-BR', {
-            timeZone: 'America/Bahia'
-        });
+        const dateNow = new Date();
 
         let newIssue = {
             problema: problema.toLowerCase(),

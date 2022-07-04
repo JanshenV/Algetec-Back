@@ -27,7 +27,7 @@ routes.get('/', (req, res) => {
 //User Routes
 routes.post('/usuarios/signup', UserSignUp);
 routes.post('/usuarios/login', UserLogin);
-routes.all(TokenValidation);
+routes.use(TokenValidation);
 routes.get('/usuarios', UserProfile);
 routes.get('/usuarios/all', GetAllUsers);
 

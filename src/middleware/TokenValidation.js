@@ -22,6 +22,7 @@ async function TokenValidation(req, res, next) {
 
         const { senha: _, ...userData } = user;
         req.user = userData;
+        
         next();
     } catch ({ message }) {
         return res.status(500).json({

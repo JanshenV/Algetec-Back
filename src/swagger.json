@@ -5,7 +5,7 @@
     "title": "REST API",
     "description": ""
   },
-  "host": "algetecback.herokuapp.com/",
+  "host": "algetecback.herokuapp.com",
   "basePath": "/",
   "schemes": [
     "http",

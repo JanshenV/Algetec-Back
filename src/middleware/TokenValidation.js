@@ -22,7 +22,7 @@ async function TokenValidation(req, res, next) {
 
         const { senha: _, ...userData } = user;
         req.user = userData;
-        return next();
+        next();
     } catch ({ message }) {
         return res.status(500).json({
             message

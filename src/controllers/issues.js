@@ -193,6 +193,16 @@ async function ModifyIssueStatus(req, res) {
             .leftJoin('usuarios', 'usuarios.id', 'issues.autor')
             .where({ id: issue_id });
 
+        const atributedTo = await knex('usuarios')
+            .select('nickname')
+            .where({ id: issue.atribuido })
+            .first();
+
+        issue = {
+            ...issue,
+            atribuido: atributedTo
+        }
+
         return res.status(200).json({ issue });
     } catch ({ message }) {
         return res.status(500).json({

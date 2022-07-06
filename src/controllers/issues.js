@@ -65,7 +65,7 @@ async function CreateIssue(req, res) {
             .first();
 
         newIssue = {
-            ...newIssue,
+            ...newIssue[0],
             atribuido: atributedTo
         }
 

@@ -70,7 +70,7 @@ async function CreateIssue(req, res) {
         }
 
         return res.status(201).json({
-            issue: newIssue[0]
+            issue: newIssue,
         });
     } catch ({ message }) {
         return res.status(500).json({

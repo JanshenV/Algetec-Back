@@ -42,8 +42,35 @@ async function CreateIssue(req, res) {
             .insert(newIssue)
             .returning('*');
 
+        newIssue = await knex('issues')
+            .select(
+                'issues.id as issue_id',
+                'issues.problema as problema',
+                'issues.versao as versao',
+                'issues.descricao as descricao',
+                'issues.prioridade as prioridade',
+                'issues.status as status',
+                'issues.problema as problema',
+                'issues.data as data',
+                'issues.atribuido as atribuido',
+                'usuarios.nickname as autor',
+                'usuarios.id as autor_id',
+                'usuarios.nivel as autor_nivel')
+            .leftJoin('usuarios', 'usuarios.id', 'issues.autor')
+            .where({ 'issues.id': newIssue[0].id });
+
+        const atributedTo = await knex('usuarios')
+            .select('nickname')
+            .where({ id: newIssue[0].atribuido })
+            .first();
+
+        newIssue = {
+            ...newIssue,
+            atribuido: atributedTo
+        }
+
         return res.status(201).json({
-            issue: newIssue
+            issue: newIssue[0]
         });
     } catch ({ message }) {
         return res.status(500).json({
@@ -174,34 +201,8 @@ async function ModifyIssueStatus(req, res) {
             .update({
                 status,
                 data: dateNow
-            });
-
-        issue = await knex('issues')
-            .select(
-                'issues.id as issue_id',
-                'issues.problema as problema',
-                'issues.versao as versao',
-                'issues.descricao as descricao',
-                'issues.prioridade as prioridade',
-                'issues.status as status',
-                'issues.problema as problema',
-                'issues.data as data',
-                'issues.atribuido as atribuido',
-                'usuarios.nickname as autor',
-                'usuarios.id as autor_id',
-                'usuarios.nivel as autor_nivel')
-            .leftJoin('usuarios', 'usuarios.id', 'issues.autor')
-            .where({ id: issue_id });
-
-        const atributedTo = await knex('usuarios')
-            .select('nickname')
-            .where({ id: issue.atribuido })
-            .first();
-
-        issue = {
-            ...issue,
-            atribuido: atributedTo
-        }
+            })
+            .returning('*');
 
         return res.status(200).json({ issue });
     } catch ({ message }) {

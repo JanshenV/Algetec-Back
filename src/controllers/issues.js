@@ -241,7 +241,9 @@ async function DeleteMultiple(req, res) {
                 .where({ id });
         };
 
-        return res.status(200).json();
+        return res.status(200).json({
+            message: 'Issues deletadas.'
+        });
     } catch ({ message }) {
         return res.status(500).json({
             message
